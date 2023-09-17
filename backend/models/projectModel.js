@@ -20,6 +20,11 @@ const taskSchema = new Schema({
     important: {
         type: Boolean,
         default: false
+    },
+
+    project: {
+        type: String,
+        required: true
     }
 })
 
