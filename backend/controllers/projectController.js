@@ -6,7 +6,8 @@ const Task = require('../models/taskModel')
 
 exports.get_all_projects = asyncHandler(async(req, res) => {
     const projects = await Project.find({})
-    res.status(200).json({ projects })
+    console.log("PROJECTS: ", projects)
+    res.status(200).json(projects)
 })
 
 //get single project
