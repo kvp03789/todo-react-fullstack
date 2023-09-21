@@ -26,6 +26,19 @@ nav{
   flex-direction: column;
 }
 
+.nav-project-item{
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-project-item-section{
+  display: flex;
+}
+
+.nav-item-dots-container{
+  position: relative;
+}
+
 main{
   display: flex;
 
@@ -33,6 +46,19 @@ main{
 
 .task-container{
   width: 100%;
+  display: flex;
+  flex-direction: vertical;
+  justify-content: flex-start;
+}
+
+.task-item{
+  display: flex;
+  justify-content: center;
+}
+
+.task-item-section{
+  position: relative;
+  z-index: 900;
 }
 
 
@@ -47,12 +73,44 @@ main{
 
 
 
+
+
+
+.edit-popup{
+  position: absolute;
+  z-index: 1000;
+  background-color: white;
+  border: 4px solid black;
+  border-radius: 5px;
+  left: 5rem;
+}
+
+.popup-section{
+
+}
+
+.popup-section:hover{
+  background-color: rgba(180, 201, 244, 0.687);
+}
 
 .small-svg{
   width: 50px;
   height: 50px;
 }
 
+.smaller-svg{
+  width: 25px;
+  height: 25px;
+}
+
 .error-message{
   color: red;
+}
+
+.button-pointer{
+  cursor: pointer;
+}
+
+.rotated{
+  transform: rotate(45deg);
 }

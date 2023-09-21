@@ -30,13 +30,23 @@ exports.create_new_project = asyncHandler(async(req, res) => {
 //delete a project
 
 exports.delete_project = asyncHandler(async(req, res) => {
-    res.json({message: "DELETE single project"})
+    const id = req.params.id
+    console.log(id)
+    const deletedProject = await Project.findByIdAndDelete(id)
+    if(deletedProject){
+        res.status(200).json({message: "DELETE single project", deletedProject})
+    }
+    if(!deletedProject){
+        res.json({error: 'something went wrong'})
+    }
 })
 
 //update a project
 
 exports.update_project = asyncHandler(async(req, res) => {
-    res.json({message: "UPDATE single project"})
+    const { name, _id } = req.body
+    const updatedProject = await Project.findOneAndUpdate({ _id }, { name }, {new: true})
+    res.json({message: "UPDATE single project", body: updatedProject})
 })
 
 //get single task
@@ -48,19 +58,21 @@ exports.get_single_task = asyncHandler(async(req, res) => {
 //create new task
 
 exports.create_new_task = asyncHandler(async(req, res) => {
-    const {name, details, important} = req.body
-    const project = req.params.projId
-    const newTask = {
-        name, details, important, project
+    const {name, details, important, date, project} = req.body
+    // const project = req.params.projId
+    const task = {
+        name, details, date, important, project
     }
 
-    await Task.create(newTask)
+    const newTask = await Task.create(task)
 
-    await Project.updateOne(
+    console.log(newTask)
+
+    const updatedProject = await Project.updateOne(
         {_id: project},
         {$push: {taskList: newTask }}
     )
-        
+    console.log(updatedProject) 
     res.status(200).json(newTask)
 
 })

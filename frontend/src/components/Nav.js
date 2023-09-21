@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { useProjectContext } from "../hooks/useProjectContext"; 
 import Plus from "../img/plus.svg"
 
+import NavProjectItem from "./NavProjectItem";
+
 const Nav = () => {
 
     const [projectFormInput, setProjectFormInput] = useState('')
@@ -11,28 +13,6 @@ const Nav = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
     const { dispatch, globalProjectState } = useProjectContext()
-
-    useEffect(() => {
-        const fetchProjects = async () => {
-            setIsLoading(true)
-            const response = await fetch('http://localhost:4000/api/projects')
-
-            const json = await response.json()
-            if(response.ok){
-                dispatch({type: 'SET_PROJECTS', payload: json})
-                setIsLoading(false)
-            }
-            if(!response.ok){
-                setError(json.error)
-                setIsLoading(false)
-            }
-            console.log("Debug: projects json in nav component: ", json)
-        }
-        
-        fetchProjects()
-    }, [])
-
-   
 
     const handleFormInputSubmit = async (e) => {
         const alreadyExists = projects.some(proj => {return proj.name === projectFormInput})
@@ -59,6 +39,7 @@ const Nav = () => {
 
         }
     }
+    
     return ( 
         <nav>
             <NavLink to="/all" className="nav-item">All</NavLink>
@@ -71,9 +52,7 @@ const Nav = () => {
             {
                 isLoading === false && globalProjectState
                 ? globalProjectState.projects.map((proj) => (
-                    <div className="nav-project-item nav-item">
-                        <NavLink to={`/projects/${proj.name.split(" ").join("_")}`} className="nav-item">{proj.name}</NavLink>
-                    </div>
+                    <NavProjectItem project={proj}/>
                 ))
                 : <p>"loading data..."</p>
             }
