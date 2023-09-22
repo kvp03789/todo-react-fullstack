@@ -58,22 +58,28 @@ exports.get_single_task = asyncHandler(async(req, res) => {
 //create new task
 
 exports.create_new_task = asyncHandler(async(req, res) => {
+    console.log("creating new task...")
     const {name, details, important, date, project} = req.body
-    // const project = req.params.projId
-    const task = {
-        name, details, date, important, project
+    
+    try{
+        const task = {
+            name, details, date, important, project
+        }
+        const newTask = await Task.create(task)
+    
+        console.log(newTask)
+    
+        const updatedProject = await Project.updateOne(
+            {_id: project},
+            {$push: {taskList: newTask }}
+        )
+        console.log(updatedProject) 
+        res.status(200).json(newTask)
     }
-
-    const newTask = await Task.create(task)
-
-    console.log(newTask)
-
-    const updatedProject = await Project.updateOne(
-        {_id: project},
-        {$push: {taskList: newTask }}
-    )
-    console.log(updatedProject) 
-    res.status(200).json(newTask)
+    catch(err){
+        res.status(400).json({error: err.message})
+    }
+    
 
 })
 
@@ -81,28 +87,55 @@ exports.create_new_task = asyncHandler(async(req, res) => {
 
 exports.delete_task = asyncHandler(async(req, res) => {
     //find project and delete task from taskList array
-    const updatedProject = await Project.findByIdAndUpdate(
-        req.params.projId,
-        {$pull: {taskList: {_id: req.params.taskId}}}, {new: true}
-    )
+    const { projId, taskId } = req.params
+    console.log("deleting task...")
+    const project = await Project.findById(projId)
+    const newTaskList = project.taskList.filter(task => {
+        return task._id.toString() !== taskId
+    })
+    project.taskList = newTaskList
+    const updatedProject = await project.save()
 
     //find task and remove from tasks collection
-    const task = await Task.findOneAndDelete({_id: req.params.taskId})
-    res.status(200).json({task, updatedProject})
+    // const task = await Task.findOneAndDelete({_id: req.params.taskId})
+    res.status(200).json(updatedProject)
 })
 
 //update task
 
 exports.update_task = asyncHandler(async(req, res) => {
+    console.log("editing task...", req.body)
     const {taskId, projId} = req.params
+    try{
+        const project = await Project.findById(projId)
 
-    const updatedTask = await Task.findOneAndUpdate({ _id: taskId }, { ...req.body }, {new: true})
+        const updatedTask = {...req.body}
+        console.log('updated task: ', updatedTask)
+        const updatedTaskList = project.taskList.map(task => {
+            return task._id.toString() === taskId ? {...updatedTask} : task
+        })
     
-    const updatedProject = await Project.findOneAndUpdate(
-        { taskList: { $elemMatch: { _id: taskId } } },
-        { ...req.body },
-        {new: true}
-    )
+        project.taskList = updatedTaskList;
+    
+        await project.save()
+    
+        console.log('task edited and project updated!: ', project)
+        res.status(200).json({ project })
+    }
+    catch(err){
+        console.log(err.message)
+    }
 
-    res.status(200).json({ updatedTask, updatedProject })
+
+    
+    //const updatedTask = await Task.findOneAndUpdate({ _id: taskId }, { ...req.body }, {new: true})
+    
+    // const updatedProject = await Project.findOneAndUpdate(
+    //     { taskList: { $elemMatch: { _id: taskId } } },
+    //     { ...req.body },
+    //     {new: true}
+    // )
+   
+
+    
 })

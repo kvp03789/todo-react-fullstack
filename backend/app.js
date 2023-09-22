@@ -8,6 +8,7 @@ const mongoose = require('mongoose')
 require('dotenv').config()
 
 const projectsRouter = require('./routes/projects');
+const userRouter = require('./routes/users')
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/projects', projectsRouter);
+app.use('/api/users', userRouter)
 
 
 

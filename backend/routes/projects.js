@@ -33,8 +33,10 @@ router.get("/:id/tasks/:id", get_single_task)
 //POST single task on a project's task list
 router.post("/:projId/tasks", create_new_task)
 
+//DELETE task
 router.delete("/:projId/tasks/:taskId", delete_task)
 
+//edit task
 router.patch("/:projId/tasks/:taskId", update_task)
 
 module.exports = router

@@ -10,10 +10,12 @@ console.log(
   
   const Project = require("./models/projectModel");
   const Task = require("./models/taskModel")
+  const User = require("./models/userModel")
 
   
   const projectsArray = [];
-  const tasksArray = []
+  const tasksArray = [];
+  const usersArray = [];
  
   
   const mongoose = require("mongoose");
@@ -30,16 +32,44 @@ console.log(
     await deleteAll();
     await createProjects();
     await createTasks();
+    await createUsers();    
+    await updateProjects()
+
+    
     
     console.log("Debug: Closing mongoose");
     mongoose.connection.close();
   }
+
+  async function updateProjects() {
+    const project = await Project.findById(projectsArray[1]._id.toString())
+    console.log("DEBUG: project", project)
+    const newTaskList = tasksArray.map(task => {
+      console.log(`DEBUG: task.project: ${task.project} ---- proj._id: ${project._id}`)
+      console.log(`DEBUG: ${task.project === project._id.toString()}`)
+      if(task.project === project._id.toString()){
+        return task
+      }
+    })
+
+    project.taskList = newTaskList
+    await project.save()
+
+  }
+
+  async function userCreate(index, email, password) {
+    const user = new User({ email, password })
+    await user.save()
+    usersArray[index] = user
+    console.log(`Added user: ${email}`);
+  }
   
   async function projectCreate(index, name) {
+    
     const project = new Project({ name });
     await project.save();
     projectsArray[index] = project;
-    console.log(`Added genre: ${name}`);
+    console.log(`Added project: ${name}`);
   }
   
   async function taskCreate(index, name, details, date, important, project) {
@@ -48,9 +78,13 @@ console.log(
   
     await task.save();
     tasksArray[index] = task;
-    console.log(`Added task: ${name}`);
+    console.log(`Added task: ${name}`, task);
   }
   
+  async function deleteUsers(){
+    await User.deleteMany({})
+  }
+
   async function deleteTasks(){
     await Task.deleteMany({})
   }
@@ -59,6 +93,13 @@ console.log(
     await Project.deleteMany({})
   }
   
+  async function createUsers() {
+    console.log('Creating users');
+    await Promise.all([
+      userCreate(0, "test_user@website.com", "abc123!"),
+      userCreate(1, "guy_man123@emailsite.com", "abc456!")
+    ])
+  }
   
   async function createProjects() {
     console.log("Adding projects");
@@ -67,6 +108,7 @@ console.log(
       projectCreate(1, "And a second task"),
       projectCreate(2, "Always be busy"),
     ]);
+    console.log("projectsArray: ")
   }
   
   async function createTasks() {
@@ -80,7 +122,8 @@ console.log(
     console.log("Deleting old data...")
     await Promise.all([
         deleteProjects(),
-        deleteTasks()
+        deleteTasks(),
+        deleteUsers()
     ])
     console.log("Old data deleted!")
   }

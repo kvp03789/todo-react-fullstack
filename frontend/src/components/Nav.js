@@ -7,6 +7,7 @@ import NavProjectItem from "./NavProjectItem";
 
 const Nav = () => {
 
+    const [displayNav, setDisplayNav] = useState(true)
     const [projectFormInput, setProjectFormInput] = useState('')
     const [displayInput, setDisplayInput] = useState(false)
     const [projects, setProjects] = useState([])

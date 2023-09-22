@@ -18,9 +18,22 @@ const TaskItem = (props) => {
         setDisplayDotsMenu(!displayDotsMenu)
     }
 
-    const handleDeleteTask = () => {
-        console.log("Deleted Task")
-        setDisplayDotsMenu(false)
+    const handleDeleteTask = async () => {
+        const options = {
+            method: 'DELETE',
+            headers: {'Content-Type': 'application/json'}
+        }
+        const response = await fetch(`http://localhost:4000/api/projects/${props.project._id}/tasks/${props.task._id}`, options)
+        const json = await response.json()
+
+        console.log("Deleted Task: ", json)
+        if(response.ok){
+            setDisplayDotsMenu(false)
+        }
+        if(!response.ok){
+            setError(json.error)
+        }
+        
     }
 
     const handleEditTask = () => {
@@ -29,13 +42,14 @@ const TaskItem = (props) => {
         setDisplayDotsMenu(false)
     }
 
-    const handleFormSubmit = async () => {
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
         const newTask = {
             name, details, date, important: taskIsImportant, project: props.project._id
         }
         const options = {
             method: 'PATCH',
-            headers: {},
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(newTask)
         }
         const response = await fetch(`http://localhost:4000/api/projects/${props.project._id}/tasks/${props.task._id}`, options)
@@ -97,7 +111,7 @@ const TaskItem = (props) => {
                             </div>
                             <div className="form-section">
                                 <label for="date"></label>
-                                <input value={props.task.date.toLocaleDateString('en-CA')} type="date" name="date"
+                                <input defaultValue={props.task.date} type="date" name="date"
                                         onChange={(e) => setDate(e.target.value)}
                                 ></input>
                             </div>

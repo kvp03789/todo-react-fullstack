@@ -8,12 +8,11 @@ const taskSchema = new Schema({
     },
 
     details: {
-        type: String,
-        required: true 
+        type: String
     },
 
     date: {
-        type: Date
+        type: String
     },
 
     important: {

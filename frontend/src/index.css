@@ -21,9 +21,38 @@ body {
   height: 100vh;
 }
 
+header{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.header-buttons-container{
+  display: flex;
+  gap: 20px;
+}
+
+.header-button{
+  border-radius: 10px;
+  background-color: rgba(127, 255, 176, 0.436);
+}
+
+.login-button:hover{
+  background-color: rgba(186, 186, 232, 0.67);
+}
+
+.signup-button{
+  background-color: rgba(202, 241, 162, 0.668);
+}
+
+.signup-button:hover{
+  background-color: rgba(76, 0, 130, 0.305);
+}
+
 nav{
   display: flex;
   flex-direction: column;
+  border-right: 2px solid black;
 }
 
 .nav-project-item{
@@ -47,7 +76,7 @@ main{
 .task-container{
   width: 100%;
   display: flex;
-  flex-direction: vertical;
+  flex-direction: column;
   justify-content: flex-start;
 }
 
@@ -59,6 +88,24 @@ main{
 .task-item-section{
   position: relative;
   z-index: 900;
+}
+
+.user-page-container{
+  display: flex;
+}
+
+.user-page-container:first-child{
+  border-right: 2px solid rgba(86, 86, 86, 0.294)
+}
+
+.user-page-section{
+  display: flex;
+  flex-direction: column;
+}
+
+.user-form-container{
+  display: flex;
+  flex-direction: column;
 }
 
 
@@ -98,6 +145,11 @@ main{
   height: 50px;
 }
 
+.small-logo{
+  height: 50px;
+  width: auto;
+}
+
 .smaller-svg{
   width: 25px;
   height: 25px;
@@ -107,10 +159,14 @@ main{
   color: red;
 }
 
-.button-pointer{
+.button-pointer:hover{
   cursor: pointer;
 }
 
 .rotated{
   transform: rotate(45deg);
+}
+
+.hidden{
+  display: none;
 }

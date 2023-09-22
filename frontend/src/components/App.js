@@ -10,6 +10,7 @@ import Project from '../pages/Project';
 import Header from "./Header";
 import Nav from "./Nav";
 import useProjectContext from "../hooks/useProjectContext";
+import User from "./User";
 
 
 const App = () => {
@@ -38,7 +39,6 @@ const App = () => {
         <main>
 
             <Nav />
-
             <Routes element={<RootLayout />}>
                 <Route path="all" element={<All />} />
                 <Route path="week" element={<Week />} />
@@ -49,8 +49,7 @@ const App = () => {
                         <Route path={`projects/${proj.name.split(" ").join("_")}`} element={<Project project={proj}  />}/>
                     ))
                 }
-                
-                
+                <Route path="user" element={<User />} />
                 <Route path="*" element={<NotFound/>} />
             </Routes>
 
