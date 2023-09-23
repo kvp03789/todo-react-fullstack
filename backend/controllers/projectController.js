@@ -104,19 +104,26 @@ exports.delete_task = asyncHandler(async(req, res) => {
 //update task
 
 exports.update_task = asyncHandler(async(req, res) => {
-    console.log("editing task...", req.body)
+    console.log("editing task...", req.body, req.params)
     const {taskId, projId} = req.params
     try{
+        if(!req.body.name){
+            throw Error('Must enter a name')
+        }
         const project = await Project.findById(projId)
+        // const task = await Task.findById(taskId)
 
-        const updatedTask = {...req.body}
+        // const updatedTask = {...req.body}
+        const updatedTask = await Task.findByIdAndUpdate(taskId, {...req.body }, {new: true})
+        
         console.log('updated task: ', updatedTask)
         const updatedTaskList = project.taskList.map(task => {
-            return task._id.toString() === taskId ? {...updatedTask} : task
+            return task._id.toString() === taskId ? {...req.body} : task
         })
     
         project.taskList = updatedTaskList;
     
+        // await task.save()
         await project.save()
     
         console.log('task edited and project updated!: ', project)

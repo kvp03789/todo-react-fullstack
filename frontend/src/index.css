@@ -70,7 +70,8 @@ nav{
 
 main{
   display: flex;
-
+  justify-content: center;
+  align-items: center;
 }
 
 .task-container{
@@ -92,6 +93,8 @@ main{
 
 .user-page-container{
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .user-page-container:first-child{

@@ -14,7 +14,7 @@ exports.signupUser = asyncHandler(async(req, res, next) => {
         console.log(email, password)
         const newUser = await User.signup(email, password)
         const token = createToken(newUser._id)
-        res.status(200).json({message: 'user created!', token})
+        res.status(200).json({message: 'user created!', email, token, _id: newUser._id })
     }
     catch(err){
         res.status(400).json({error: err.message})
@@ -24,7 +24,19 @@ exports.signupUser = asyncHandler(async(req, res, next) => {
 
 //login user
 exports.loginUser = asyncHandler(async(req, res, next) => {
-    res.json({message: 'user logged in!'})
+
+    const { email, password } = req.body
+    
+    try{
+        const user = await User.login(email, password) 
+        const token = createToken(user._id)
+        res.status(200).json({message: 'user logged in!', email, token, _id: user._id })
+    }
+    catch(err){
+        res.status(400).json({error: err.message})
+    }
+    
+    
 })
 
 //log user out

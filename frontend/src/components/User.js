@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import Logo from "../img/listo_logo.png"
+import useSignup from "../hooks/useSignup";
+import useLogin from "../hooks/useLogin";
 
 const User = () => {
 
@@ -13,18 +15,30 @@ const User = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [passwordVerify, setPasswordVerify] = useState('')
+    const [error, setError] = useState(null)
+    const { signup } = useSignup()
+    const { login } = useLogin()
 
-    const handleLogin = (e) => {
-        e.preventDefault()
-        console.log(`logging in: email: ${email} password: ${password}`)
+    const handleLogin = async (e) => {
+        try{
+            e.preventDefault()
+            await login(email, password)
+            console.log(`logging in: email: ${email} password: ${password}`)
+            setEmail('')
+            setPassword('')
+        }
+        catch(err){
+
+        }
+        
     }
 
-    const handleSignup = (e) => {
+    const handleSignup = async (e) => {
         e.preventDefault()
         console.log(`attempting sign up: email: ${email} password: ${password} passwordVerify: ${passwordVerify}`)
-
-        
-
+        if(password === passwordVerify){
+            await signup(email, password)
+        }
     }
 
     return ( 

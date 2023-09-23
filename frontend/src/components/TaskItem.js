@@ -96,21 +96,22 @@ const TaskItem = (props) => {
                 <div className="edit-task-container">
                     <form onSubmit={(e) => handleFormSubmit(e)}>
                             <div className="form-section">
-                                <label for="name"></label>
+                                <label htmlFor="name"></label>
                                 <input defaultValue={props.task.name}
                                         name="name" 
                                         onChange={(e) => setName(e.target.value)}
+                                        required="true"
                                 ></input>
                             </div>
                             <div className="form-section">
-                                <label for="details"></label>
+                                <label htmlFor="details"></label>
                                 <input defaultValue={props.task.details} 
                                         name="details"
                                         onChange={(e) => setDetails(e.target.value)}
                                 ></input>
                             </div>
                             <div className="form-section">
-                                <label for="date"></label>
+                                <label htmlFor="date"></label>
                                 <input defaultValue={props.task.date} type="date" name="date"
                                         onChange={(e) => setDate(e.target.value)}
                                 ></input>
