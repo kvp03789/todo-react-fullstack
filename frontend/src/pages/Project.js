@@ -53,7 +53,11 @@ const Project = (props) => {
             },
             body: JSON.stringify(newTask)
         }
-        const response = await fetch(`http://localhost:4000/api/projects/${props.project._id}/tasks`, options)
+        const response = await fetch(
+            process.env.NODE_ENV === 'development' || 'test'
+            ? `http://localhost:4000/api/projects/${props.project._id}/tasks`
+            : `https://todo-react-fullstack-production.up.railway.app/api/projects/${props.project._id}/tasks`, 
+            options)
         
         const json = await response.json()
 

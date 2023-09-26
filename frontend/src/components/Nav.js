@@ -33,7 +33,11 @@ const Nav = () => {
                 },
                 body: JSON.stringify({ name: projectFormInput, user: user._id })
             }
-            const response = await fetch('http://localhost:4000/api/projects', options)
+            const response = await fetch(
+                process.env.NODE_ENV === 'development' || 'test'
+                ? 'http://localhost:4000/api/projects'
+                : 'https://todo-react-fullstack-production.up.railway.app/api/projects', 
+                options)
             const json = await response.json()
     
             if(!response.ok){

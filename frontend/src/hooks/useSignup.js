@@ -18,7 +18,11 @@ const useSignup = () => {
                 },
                 body: JSON.stringify({ email, password }) 
             }
-            const response = await fetch(`http://localhost:4000/api/users/signup`, options)
+            const response = await fetch(
+                process.env.NODE_ENV === 'development' || 'test' 
+                ? `http://localhost:4000/api/users/signup`
+                : `https://todo-react-fullstack-production.up.railway.app/api/users/signup`,
+                 options)
             const json = await response.json()
 
             if(!response.ok){

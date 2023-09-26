@@ -41,7 +41,11 @@ const EditTaskItem = (props) => {
             },
             body: JSON.stringify(newTask)
         }
-        const response = await fetch(`http://localhost:4000/api/projects/${props.project._id}/tasks/${props.task._id}`, options)
+        const response = await fetch(
+            process.env.NODE_ENV === 'development' || 'test'
+            ? `http://localhost:4000/api/projects/${props.project._id}/tasks/${props.task._id}`
+            : `https://todo-react-fullstack-production.up.railway.app/api/projects/${props.project._id}/tasks/${props.task._id}`, 
+            options)
         const json = await response.json()
         if(response.ok){
             console.log("edit task form submitted great success!: ", json)

@@ -24,7 +24,11 @@ const NavProjectItem = (props) => {
                 'Authorization': `Bearer ${user.token}`
             }
         }
-        const response = await fetch(`http://localhost:4000/api/projects/${props.project._id}`, options)
+        const response = await fetch(
+            process.env.NODE_ENV === 'development' || 'test'
+            ? `http://localhost:4000/api/projects/${props.project._id}`
+            : `https://todo-react-fullstack-production.up.railway.app/api/projects/${props.project._id}`, 
+            options)
         const json = await response.json()
 
         if(response.ok){
@@ -53,7 +57,11 @@ const NavProjectItem = (props) => {
             },
             body: JSON.stringify({ name, _id: props.project._id })
         }
-        const response = await fetch(`http://localhost:4000/api/projects/${props.project._id}`, options)
+        const response = await fetch(
+            process.env.NODE_ENV === 'development' || 'test'
+            ? `http://localhost:4000/api/projects/${props.project._id}`
+            : `https://todo-react-fullstack-production.up.railway.app/api/projects/${props.project._id}`, 
+            options)
         const json = await response.json()
 
         if(response.ok){
