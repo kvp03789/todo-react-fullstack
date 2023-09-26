@@ -11,7 +11,7 @@ export const useLogout = () => {
         localStorage.removeItem('user')
 
         //logout action for global auth state
-        dispatch({action: 'LOGOUT'})
+        dispatch({type: 'LOGOUT'})
     }
 
     return {

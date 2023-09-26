@@ -8,6 +8,7 @@ const useLogin = () => {
     const [isLoading, setIsLoading] = useState(null)
 
     const login = async (email, password) => {
+        console.log(`logging in: email: ${email} password: ${password}`)
         setIsLoading(true)
         setError(null)
         try{
@@ -20,6 +21,7 @@ const useLogin = () => {
             }
             const response = await fetch(`http://localhost:4000/api/users/login`, options)
             const json = await response.json()
+            console.log("json from log in attempt: ", json)
 
             if(!response.ok){
                 setIsLoading(false)
@@ -34,8 +36,9 @@ const useLogin = () => {
             }
         }
         catch(err){
-            setError(err)
+            setError(err.message)
             setIsLoading(false)
+            console.log('DEBUG: error from useLogin hook: ', err)
         }
 
     }

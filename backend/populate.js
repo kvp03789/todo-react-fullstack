@@ -32,7 +32,7 @@ console.log(
     await deleteAll();
     await createProjects();
     await createTasks();
-    await createUsers();    
+    // await createUsers();    
     await updateProjects()
 
     
@@ -66,7 +66,7 @@ console.log(
   
   async function projectCreate(index, name) {
     
-    const project = new Project({ name });
+    const project = new Project({ name, user: '651337683cb2703b903dc7ea' });
     await project.save();
     projectsArray[index] = project;
     console.log(`Added project: ${name}`);
@@ -123,7 +123,7 @@ console.log(
     await Promise.all([
         deleteProjects(),
         deleteTasks(),
-        deleteUsers()
+        // deleteUsers()
     ])
     console.log("Old data deleted!")
   }

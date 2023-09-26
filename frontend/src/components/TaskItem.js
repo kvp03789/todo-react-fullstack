@@ -1,18 +1,23 @@
 import { useState } from 'react'
+import EditTaskItem from './EditTaskItem'
 import { format } from 'date-fns'
 import Dots from "../img/dots.svg"
 import StarOutline from "../img/star-outline.svg"
 import StarFill from "../img/star-fill.svg"
+import useAuthContext from '../hooks/useAuthContext'
+import useProjectContext from '../hooks/useProjectContext'
+import { json } from 'react-router'
+
 
 const TaskItem = (props) => {
 
     const [displayDotsMenu, setDisplayDotsMenu] = useState(false)
     const [displayEditTask, setDisplayEditTask] = useState(false)
     const [error, setError] = useState(null)
-    const [name, setName] = useState('')
-    const [details, setDetails] = useState('')
-    const [date, setDate] = useState('')
-    const [taskIsImportant, setTaskIsImportant] = useState(props.task.important)
+    
+
+    const { user } = useAuthContext()
+    const { globalProjectState, dispatch } = useProjectContext()
 
     const handleDotsClick = () => {
         setDisplayDotsMenu(!displayDotsMenu)
@@ -21,14 +26,26 @@ const TaskItem = (props) => {
     const handleDeleteTask = async () => {
         const options = {
             method: 'DELETE',
-            headers: {'Content-Type': 'application/json'}
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }
         }
         const response = await fetch(`http://localhost:4000/api/projects/${props.project._id}/tasks/${props.task._id}`, options)
         const json = await response.json()
 
         console.log("Deleted Task: ", json)
         if(response.ok){
+            //close menu
             setDisplayDotsMenu(false)
+            //update global project state
+            dispatch({type: 'SET_PROJECTS',
+                payload: globalProjectState.projects.map(proj => {
+                    return proj._id === props.project._id
+                    ? {...json}
+                    : proj
+                })
+            })
         }
         if(!response.ok){
             setError(json.error)
@@ -40,28 +57,10 @@ const TaskItem = (props) => {
         console.log("Edited Task")
         setDisplayEditTask(!displayEditTask)
         setDisplayDotsMenu(false)
+        //update global project sstate
     }
 
-    const handleFormSubmit = async (e) => {
-        e.preventDefault();
-        const newTask = {
-            name, details, date, important: taskIsImportant, project: props.project._id
-        }
-        const options = {
-            method: 'PATCH',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(newTask)
-        }
-        const response = await fetch(`http://localhost:4000/api/projects/${props.project._id}/tasks/${props.task._id}`, options)
-        const json = await response.json()
-        if(response.ok){
-            console.log("edit task form submitted great success!: ", json)
-            setDisplayEditTask(false)
-        }
-        if(!response.ok){
-            setError(json.error)
-        }
-    }
+    
 
     return ( 
         <div className="task-item">
@@ -93,36 +92,7 @@ const TaskItem = (props) => {
             }
             {
                 displayEditTask &&
-                <div className="edit-task-container">
-                    <form onSubmit={(e) => handleFormSubmit(e)}>
-                            <div className="form-section">
-                                <label htmlFor="name"></label>
-                                <input defaultValue={props.task.name}
-                                        name="name" 
-                                        onChange={(e) => setName(e.target.value)}
-                                        required="true"
-                                ></input>
-                            </div>
-                            <div className="form-section">
-                                <label htmlFor="details"></label>
-                                <input defaultValue={props.task.details} 
-                                        name="details"
-                                        onChange={(e) => setDetails(e.target.value)}
-                                ></input>
-                            </div>
-                            <div className="form-section">
-                                <label htmlFor="date"></label>
-                                <input defaultValue={props.task.date} type="date" name="date"
-                                        onChange={(e) => setDate(e.target.value)}
-                                ></input>
-                            </div>
-                            <div className="form-section button-pointer" onClick={() => setTaskIsImportant(!taskIsImportant)}>
-                                <img src={taskIsImportant ? StarFill : StarOutline} className="small-svg"></img>
-                            </div>
-                            <button>Add</button>
-                            <button onClick={() => setDisplayEditTask(false)}>Cancel</button>
-                        </form>
-                </div>
+                <EditTaskItem task={props.task} project={props.project} setDisplayEditTask={setDisplayEditTask}/>
             }
         </div>
      );

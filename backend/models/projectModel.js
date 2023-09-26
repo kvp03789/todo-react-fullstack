@@ -33,7 +33,12 @@ const projectSchema = new Schema({
         required: true
     },
 
-    taskList: [taskSchema]
+    taskList: [taskSchema],
+
+    user: {
+        type: String,
+        required: true
+    }
 })
 
 module.exports = mongoose.model('project', projectSchema)

@@ -5,32 +5,25 @@ import useLogin from "../hooks/useLogin";
 
 const User = () => {
 
-    useEffect(() => {
-        const nav = document.querySelector("nav")
-        !nav.classList.contains("hidden")
-        && nav.classList.add("hidden")
-    }, [])
+    // useEffect(() => {
+    //     //display nav or not
+    //     const nav = document.querySelector("nav")
+    //     !nav.classList.contains("hidden")
+    //     && nav.classList.add("hidden")
+    // }, [])
     
     const [showSignup, setShowSignup] = useState(false)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [passwordVerify, setPasswordVerify] = useState('')
-    const [error, setError] = useState(null)
     const { signup } = useSignup()
-    const { login } = useLogin()
+    const { login, error } = useLogin()
 
     const handleLogin = async (e) => {
-        try{
             e.preventDefault()
             await login(email, password)
-            console.log(`logging in: email: ${email} password: ${password}`)
             setEmail('')
             setPassword('')
-        }
-        catch(err){
-
-        }
-        
     }
 
     const handleSignup = async (e) => {
@@ -52,13 +45,19 @@ const User = () => {
                     <form onSubmit={e => handleLogin(e)}>
                     <div className="user-form-container">
                         <h3>Login</h3>
-                        <input type="email" placeholder="Email" onChange={(e) => {setEmail(e.target.value)}}/> 
-                        <input type="password" placeholder="Password" onChange={(e) => {setPassword(e.target.value)}}/> 
+                        <input type="email" placeholder="Email" value={email} onChange={(e) => {setEmail(e.target.value)}}/> 
+                        <input type="password" placeholder="Password" value={password} onChange={(e) => {setPassword(e.target.value)}}/> 
                         <button type="submit">Submit</button>
                     </div>
                     </form>
                     <h5>Don't have an account?</h5>
                         <button className="button-pointer" onClick={() => setShowSignup(true)}>Sign up</button>
+                        {
+                            error &&
+                            <div className="error-container">
+                                <p className="error-message">{error}</p>
+                            </div>
+                        }
                 </div>
             }
 
@@ -75,8 +74,15 @@ const User = () => {
                     </form>
                     <h5>Already a member?</h5>
                         <button className="button-pointer" onClick={() => setShowSignup(false)}>Log in</button>
+                        {
+                            error &&
+                            <div className="error-container">
+                                <p className="error-message">{error}</p>
+                            </div>
+                        }
                 </div>
             }
+            
         </div>
      );
 }

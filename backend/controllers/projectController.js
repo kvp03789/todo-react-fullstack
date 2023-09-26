@@ -2,10 +2,11 @@ const asyncHandler = require('express-async-handler')
 const Project = require('../models/projectModel')
 const Task = require('../models/taskModel')
 
-//get all projects
+//get all projects of user
 
 exports.get_all_projects = asyncHandler(async(req, res) => {
-    const projects = await Project.find({})
+    const _id = req.params.userId
+    const projects = await Project.find({ user: _id })
     console.log("PROJECTS: ", projects)
     res.status(200).json(projects)
 })
@@ -21,8 +22,8 @@ exports.get_single_project = asyncHandler(async(req, res) => {
 //create new project
 
 exports.create_new_project = asyncHandler(async(req, res) => {
-    const name = req.body.name
-    const newProject = await Project.create( {name} )
+    const { name, user } = req.body
+    const newProject = await Project.create( {name, user} )
     res.status(200).json(newProject)
     
 })
@@ -60,7 +61,10 @@ exports.get_single_task = asyncHandler(async(req, res) => {
 exports.create_new_task = asyncHandler(async(req, res) => {
     console.log("creating new task...")
     const {name, details, important, date, project} = req.body
-    
+    const projectToUpdate = await Project.findById(project)
+    if(!projectToUpdate){
+        return res.status(500).json({error: "Project doesnt exist"})
+    }
     try{
         const task = {
             name, details, date, important, project
@@ -127,7 +131,7 @@ exports.update_task = asyncHandler(async(req, res) => {
         await project.save()
     
         console.log('task edited and project updated!: ', project)
-        res.status(200).json({ project })
+        res.status(200).json(project)
     }
     catch(err){
         console.log(err.message)

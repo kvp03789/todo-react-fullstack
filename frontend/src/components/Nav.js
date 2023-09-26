@@ -2,8 +2,9 @@ import { NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useProjectContext } from "../hooks/useProjectContext"; 
 import Plus from "../img/plus.svg"
-
+import useAuthContext from "../hooks/useAuthContext";
 import NavProjectItem from "./NavProjectItem";
+
 
 const Nav = () => {
 
@@ -13,7 +14,9 @@ const Nav = () => {
     const [projects, setProjects] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
+    
     const { dispatch, globalProjectState } = useProjectContext()
+    const { user } = useAuthContext()
 
     const handleFormInputSubmit = async (e) => {
         const alreadyExists = projects.some(proj => {return proj.name === projectFormInput})
@@ -24,8 +27,11 @@ const Nav = () => {
             setError(null)
             const options = {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ name: projectFormInput })
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
+                },
+                body: JSON.stringify({ name: projectFormInput, user: user._id })
             }
             const response = await fetch('http://localhost:4000/api/projects', options)
             const json = await response.json()
@@ -36,6 +42,11 @@ const Nav = () => {
             if(response.ok){
                 console.log('project successfully submitted:', json)
                 setProjectFormInput('')
+                setDisplayInput(false)
+                //update local state with new project
+                dispatch({type: 'SET_PROJECTS', 
+                payload: [...globalProjectState.projects, json]
+            })
             }
 
         }
@@ -63,7 +74,7 @@ const Nav = () => {
             displayInput &&
 
             <div className="nav-input-container">
-                <input className="nav-input" onChange={(e) => setProjectFormInput(e.target.value)}></input>
+                <input className="nav-input" value={projectFormInput} onChange={(e) => setProjectFormInput(e.target.value)}></input>
                 <button className="add-button form-button" onClick={handleFormInputSubmit}>Add</button>
                 <button className="cancel-button form-button" onClick={() => setDisplayInput(false)}>Cancel</button>
             </div>

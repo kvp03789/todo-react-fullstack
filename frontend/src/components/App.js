@@ -1,4 +1,4 @@
-import {Route, Routes} from "react-router-dom"
+import {Route, Routes, Navigate} from "react-router-dom"
 import { useState, useEffect } from 'react'
 import RootLayout from '../layouts/RootLayout'
 import All from '../pages/All';
@@ -10,49 +10,72 @@ import Project from '../pages/Project';
 import Header from "./Header";
 import Nav from "./Nav";
 import useProjectContext from "../hooks/useProjectContext";
+import useAuthContext from "../hooks/useAuthContext";
 import User from "./User";
 
 
 const App = () => {
 
+    const { dispatch, globalProjectState } = useProjectContext()
+    const { user } = useAuthContext()
+
+    const [projects, setProjects] = useState([])
+    const [error, setError] = useState(null)
+    const [displayNav, setDisplayNav] = useState(user ? true : false)
+
     //fetch all projects and set global state on mount
     useEffect(() => {
         const fetchProjects = async () =>{
-            const response = await fetch('http://localhost:4000/api/projects')
+            console.log('DEBUG: heres the user.token for fetching projects from useEffect of App component: ', user.token)
+            console.log('DEBUG: heres the user id whose projects are being fetched: ', user._id)
+            setError(null)
+            const response = await fetch(`http://localhost:4000/api/projects/${user._id}`, {
+                headers: {'Authorization': `Bearer ${user.token}`}
+            })
             const json = await response.json()
             console.log('Debug: here\'s the initial project state from App component: ', json )
-
-            dispatch({type: 'SET_PROJECTS', payload: json})
+            if(response.ok){
+                dispatch({type: 'SET_PROJECTS', payload: json})
+            }
+            if(!response.ok){
+                setError(json.error)
+                console.log(error)
+            }
         }
+        if(user){
+            console.log('user detected...fetching projects')
+            fetchProjects()
+        }
+        
+    }, [user])
 
-        fetchProjects()
-    }, [])
-
-    const { dispatch, globalProjectState } = useProjectContext()
-    const [projects, setProjects] = useState([])
+  
+    
 
     return ( 
     <div className="app">
 
-        <Header />
+        <Header setDisplayNav={setDisplayNav} displayNav={displayNav}/>
 
         <main>
-
-            <Nav />
+            {
+              displayNav &&  <Nav />
+            }
+            
             <Routes element={<RootLayout />}>
-                <Route path="all" element={<All />} />
-                <Route path="week" element={<Week />} />
-                <Route path="today" element={<Today />} />
-                <Route path="important" element={<Important />} />
+                <Route path="all" element={user ? <All /> : <Navigate to="/user"/>} />
+                <Route path="week" element={user ? <Week /> : <Navigate to="/user"/>} />
+                <Route path="today" element={user ? <Today /> : <Navigate to="/user"/>} />
+                <Route path="important" element={user ? <Important /> : <Navigate to="/user"/>} />
                 {
                     globalProjectState.projects.map((proj) => (
-                        <Route path={`projects/${proj.name.split(" ").join("_")}`} element={<Project project={proj}  />}/>
+                        <Route path={`projects/${proj.name.split(" ").join("_")}`} element={user ? <Project project={proj}  /> : <Navigate to="/user"/>}/>
                     ))
                 }
-                <Route path="user" element={<User />} />
+                <Route path="user" element={user ? <Navigate to="/all"/> : <User />} />
                 <Route path="*" element={<NotFound/>} />
             </Routes>
-
+                
         </main>
     </div> );
 }

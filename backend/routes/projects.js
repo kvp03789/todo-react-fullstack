@@ -11,9 +11,13 @@ const {
     delete_task,
     update_task
 } = require('../controllers/projectController')
+const requireAuth = require('../middleware/requireAuth')
 
-//GET all projects
-router.get("/", get_all_projects)
+//middleware to require auth to all routes
+router.use(requireAuth)
+
+//GET all projects of user
+router.get("/:userId", get_all_projects)
 
 //GET single project
 router.get("/:id", get_single_project)

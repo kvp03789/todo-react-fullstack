@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { format } from 'date-fns'
+import { format, parseISO } from 'date-fns'
 import StarOutline from "../img/star-outline.svg"
 import StarFill from "../img/star-fill.svg"
 import Plus from "../img/plus.svg"
 import TaskItem from "../components/TaskItem";
+import useAuthContext from "../hooks/useAuthContext";
+import useProjectContext from "../hooks/useProjectContext";
 
 const Project = (props) => {
 
@@ -18,6 +20,9 @@ const Project = (props) => {
     const [date, setDate] = useState('')
     const [important, setImportant] = useState(false)
     const [error, setError] = useState(null)
+
+    const { dispatch, globalProjectState } = useProjectContext()
+    const { user } = useAuthContext()
     
     const handleDisplayNewTaskForm = () => {
         setDisplayNewTaskForm(!displayNewTaskForm)
@@ -42,7 +47,10 @@ const Project = (props) => {
 
         const options = {
             method: 'POST',
-            headers: {'Content-type': 'application/json'},
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            },
             body: JSON.stringify(newTask)
         }
         const response = await fetch(`http://localhost:4000/api/projects/${props.project._id}/tasks`, options)
@@ -50,16 +58,26 @@ const Project = (props) => {
         const json = await response.json()
 
         if(response.ok){
+            //close new task input and re-rotate button
             setDisplayNewTaskForm(false)
-            console.log("new task submitted! resposne from server: ", json)
-            //here the global state needs to  be updated by adding new task 
-            //to this project's task list
-        }
+            document.querySelector(".plus-icon").classList.remove("rotated")
+            //add new task to global state 
+            const newTaskList = [...props.project.taskList, newTask]
+            dispatch({type: 'SET_PROJECTS', payload: 
+                globalProjectState.projects.map(proj => {
+                    return proj._id === props.project._id 
+                    ? {...proj, taskList: newTaskList}
+                    : proj
+                    })
+                })
+            }
+        
         if(!response.ok){
             setError(json.error)
             console.log("something went wrong submitting task: ", json)
         }   
     }
+    
 
     return ( 
         <div className="project-container">
@@ -99,8 +117,13 @@ const Project = (props) => {
                             </div>
                             <div className="form-section">
                                 <label for="date"></label>
-                                <input placeholder="date" type="date" name="date"
-                                        onChange={(e) => setDate(format(new Date(e.target.value), 'yyyy-mm-dd'))}
+                                <input type="date" name="date"
+                                        onChange={
+                                            (e) => {
+                                                const dateInputValue = new Date(parseISO(e.target.value))
+                                                console.log('date input value: ', dateInputValue)
+                                                setDate(format(dateInputValue, 'dd-MM-yyyy'))
+                                            }}
                                 ></input>
                             </div>
                             <div className="form-section button-pointer" onClick={handleSetImportant}>

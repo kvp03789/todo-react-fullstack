@@ -20,11 +20,13 @@ export const AuthContextProvider = ({ children }) => {
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user'))
         if(user){
-            dispatch({type: 'LOGIN', payload: {...user.user}})
+            console.log('DEBUG: USER TOKEN DETECTED, heres the payload to be dispatched: ', user.user)
+            dispatch({type: 'LOGIN', payload: user.user})
         }
         if(!user){
             dispatch({type: 'LOGOUT'})
         }
+        
     }, [])
 
     console.log('global auth state: ', globalUserState)

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import Dots from "../img/dots.svg"
+import useAuthContext from "../hooks/useAuthContext";
 
 const NavProjectItem = (props) => {
 
@@ -9,6 +10,8 @@ const NavProjectItem = (props) => {
     const [name, setName] = useState(props.project.name)
     const [error, setError] = useState(null)
 
+    const { user } = useAuthContext()
+
     const handleDotsClick = () => {
         setDisplayDotsMenu(!displayDotsMenu)
     }
@@ -16,7 +19,10 @@ const NavProjectItem = (props) => {
     const handleDeleteProject = async () => {
         const options = {
             method: 'DELETE',
-            headers: { 'Content-type': 'application/json'}
+            headers: { 
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }
         }
         const response = await fetch(`http://localhost:4000/api/projects/${props.project._id}`, options)
         const json = await response.json()
@@ -42,7 +48,8 @@ const NavProjectItem = (props) => {
         const options = {
             method: 'PATCH',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
             },
             body: JSON.stringify({ name, _id: props.project._id })
         }

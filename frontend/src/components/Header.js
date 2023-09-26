@@ -4,23 +4,28 @@ import { NavLink } from 'react-router-dom'
 import MainLogo from "../img/listo_logo.png"
 import MenuIcon from '../img/menu.svg'
 
-const Header = () => {
+const Header = (props) => {
 
     const { user } = useAuthContext()
     const { logout } = useLogout()
 
     const handleMenuClick = () => {
-        const nav = document.querySelector("nav")
-        nav.classList.contains("hidden")
-         ? nav.classList.remove("hidden")
-         : nav.classList.add("hidden")
+        // const nav = document.querySelector("nav")
+        // nav.classList.contains("hidden")
+        //  ? nav.classList.remove("hidden")
+        //  : nav.classList.add("hidden")
+        props.setDisplayNav(!props.displayNav)
     }
+
 
     return ( 
         <header>
+            {
+            user &&
             <div className="header-section" onClick={handleMenuClick}>
                 <img src={MenuIcon} className="small-svg menu-icon button-pointer"/>
             </div>
+            }
             <div className="logo-container header-section">
                 <img src={MainLogo}/>
             </div>
