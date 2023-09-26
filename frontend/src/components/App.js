@@ -29,7 +29,15 @@ const App = () => {
             console.log('DEBUG: heres the user.token for fetching projects from useEffect of App component: ', user.token)
             console.log('DEBUG: heres the user id whose projects are being fetched: ', user._id)
             setError(null)
-            const response = await fetch(`http://localhost:4000/api/projects/${user._id}`, {
+            let url
+            if(process.env.NODE_ENV === 'development' || 'test'){
+                url = `http://localhost:4000/api/projects/${user._id}`
+            }  
+            if(process.env.NODE_ENV === 'production'){
+                url = `https://todo-react-fullstack-production.up.railway.app/api/projects/${user._id}`
+            }
+            
+            const response = await fetch(url,{
                 headers: {'Authorization': `Bearer ${user.token}`}
             })
             const json = await response.json()
@@ -58,6 +66,7 @@ const App = () => {
         <Header setDisplayNav={setDisplayNav} displayNav={displayNav}/>
 
         <main>
+            <p>RUNNING IN {process.env.NODE_ENV}</p>
             {
               displayNav &&  <Nav />
             }

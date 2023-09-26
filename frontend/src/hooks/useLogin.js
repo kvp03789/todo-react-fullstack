@@ -19,7 +19,14 @@ const useLogin = () => {
                 },
                 body: JSON.stringify({ email, password }) 
             }
-            const response = await fetch(`http://localhost:4000/api/users/login`, options)
+            let url
+            if(process.env.NODE_ENV === 'development' || 'test'){
+                url = `http://localhost:4000/api/users/login`
+            }  
+            if(process.env.NODE_ENV === 'production'){
+                url = `https://todo-react-fullstack-production.up.railway.app/api/users/login`
+            }
+            const response = await fetch(url, options)
             const json = await response.json()
             console.log("json from log in attempt: ", json)
 
