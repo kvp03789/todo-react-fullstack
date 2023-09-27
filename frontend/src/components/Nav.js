@@ -63,25 +63,25 @@ const Nav = () => {
     
     return ( 
         <nav>
-            <NavLink to="/all" >
+            <NavLink to="/all" activeClassName="selected">
                 <div className="nav-item">
                     <img src={Flag} className="smaller-svg"></img>
                     <h3 className="nav-title">All</h3>
                 </div>
             </NavLink>
-            <NavLink to="/today" >
+            <NavLink to="/today" activeClassName="selected">
                 <div className="nav-item">
                     <img src={Calendar2} className="smaller-svg"></img>
                     <h3 className="nav-title">Today</h3>
                 </div>
             </NavLink>
-            <NavLink to="/week" >
+            <NavLink to="/week" activeClassName="selected">
                 <div className="nav-item">
                     <img src={Calendar} className="smaller-svg"></img>
                     <h3 className="nav-title">Week</h3>
                 </div>
             </NavLink>
-            <NavLink to="/important" >
+            <NavLink to="/important" activeClassName="selected">
                 <div className="nav-item">
                     <img src={ProjectStar} className="smaller-svg"></img>
                     <h3 className="nav-title">Important</h3>
@@ -117,7 +117,7 @@ const Nav = () => {
         {
             error && <p className="error-message">{error}</p>
         }
-            <NavLink to="/notes" >
+            <NavLink to="/notes" activeClassName="selected">
                 <div className="nav-item">
                     <img src={Notes} className="smaller-svg"></img>
                     <h3 className="nav-title">Notes</h3>

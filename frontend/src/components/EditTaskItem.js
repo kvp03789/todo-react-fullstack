@@ -12,6 +12,7 @@ const EditTaskItem = (props) => {
     const [details, setDetails] = useState(props.task.details)
     const [date, setDate] = useState(props.task.date)
     const [taskIsImportant, setTaskIsImportant] = useState(props.task.important)
+    const [taskIsComplete, setTaskIsComplete] = useState(props.task.complete)
     const [error, setError] = useState(null)
 
     const { user } = useAuthContext()
@@ -22,6 +23,7 @@ const EditTaskItem = (props) => {
         setDetails(props.task.details)
         setDate(props.task.date)
         setTaskIsImportant(props.task.important)
+        setTaskIsComplete(props.task.complete)
     }, [])
 
     const setDisplayEditTask = () => {
@@ -31,7 +33,7 @@ const EditTaskItem = (props) => {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         const newTask = {
-            name, details, date, important: taskIsImportant, project: props.project._id
+            name, details, date, important: taskIsImportant, complete: taskIsComplete, project: props.project._id
         }
         console.log('attempting to edit task, heres the newTask being sent: ', newTask)
         const options = {

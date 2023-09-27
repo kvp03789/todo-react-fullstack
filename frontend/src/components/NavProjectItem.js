@@ -75,42 +75,44 @@ const NavProjectItem = (props) => {
     }
 
     return ( 
-        <div className="nav-project-item nav-item">
-            <img src={ProjectMenu} className="smaller-svg"></img>
-            <div className="nav-project-item-section">
-                <NavLink to={`projects/${props.project.name.split(" ").join("_")}`}>{props.project.name}</NavLink>
-                
+        <NavLink to={`projects/${props.project.name.split(" ").join("_")}`} activeClassName="selected">
+            <div className="nav-project-item nav-item">
+                <img src={ProjectMenu} className="smaller-svg"></img>
+                <div className="nav-project-item-section">
+                    {props.project.name}
                     
-                
-            </div>
-            <div onClick={handleDotsClick} className="nav-item-dots-container nav-project-item-section">
-                <img src={Dots} className="smaller-svg button-pointer"></img>
-                {
-                    displayDotsMenu &&
-                    <div className="edit-popup button-pointer">
-                        <div className="popup-section button-pointer" onClick={handleEditProject}>
-                            <p>Edit Project</p>
+                        
+                    
+                </div>
+                <div onClick={handleDotsClick} className="nav-item-dots-container nav-project-item-section">
+                    <img src={Dots} className="smaller-svg button-pointer"></img>
+                    {
+                        displayDotsMenu &&
+                        <div className="edit-popup button-pointer">
+                            <div className="popup-section button-pointer" onClick={handleEditProject}>
+                                <p>Edit Project</p>
+                            </div>
+                            <div className="popup-section button-pointer" onClick={handleDeleteProject}>
+                                <p>Delete Project</p>
+                            </div>
                         </div>
-                        <div className="popup-section button-pointer" onClick={handleDeleteProject}>
-                            <p>Delete Project</p>
+                    }
+                </div>
+                {displayEditProjectForm &&
+                <div className="nav-project-item-section">  
+                    <div className="edit-project-form-container">
+                        <div className="form-section">
+                            <input name="name" defaultValue={props.project.name} onChange={(e) => setName(e.target.value)}></input>
                         </div>
-                    </div>
-                }
-            </div>
-            {displayEditProjectForm &&
-            <div className="nav-project-item-section">  
-                <div className="edit-project-form-container">
-                    <div className="form-section">
-                        <input name="name" defaultValue={props.project.name} onChange={(e) => setName(e.target.value)}></input>
-                    </div>
-                    <div className="form-section">
-                        <button onClick={handleFormSubmit}>Edit</button>
-                        <button onClick={() => setDisplayEditProjectForm(false)}>Cancel</button>
+                        <div className="form-section">
+                            <button onClick={handleFormSubmit}>Edit</button>
+                            <button onClick={() => setDisplayEditProjectForm(false)}>Cancel</button>
+                        </div>
                     </div>
                 </div>
+                }
             </div>
-             }
-        </div>
+        </NavLink>
      );
 }
  

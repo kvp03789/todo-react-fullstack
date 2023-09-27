@@ -56,7 +56,8 @@ header{
 
 main{
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: center;
   width: 100%;
   padding: 20px;
 }
@@ -111,16 +112,19 @@ nav{
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  gap: 10px;
   margin: 2rem;
 }
 
 .task-item{
+  width: 90%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   gap: 20px;
   position: relative;
   border: 2px solid rgb(68, 108, 67);
   border-radius: 10px;
+  padding: 10px;
 }
 
 .task-item:hover{
@@ -254,5 +258,9 @@ nav{
   left: 0;
   right: 0;
   border-top: 5px solid rgba(0, 0, 0, 0.233); /* Adjust the color and style as needed */
-  width: 105%;
+  width: 101%;
+}
+
+.active{
+  background-color: rgba(192, 190, 190, 0.719);
 }
