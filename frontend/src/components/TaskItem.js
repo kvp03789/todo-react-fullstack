@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import EditTaskItem from './EditTaskItem'
-import { format } from 'date-fns'
+import { format, parseISO } from 'date-fns'
 import Dots from "../img/dots.svg"
 import StarOutline from "../img/star-outline.svg"
 import StarFill from "../img/star-fill.svg"
+import CheckGrey from "../img/check-grey.svg"
+import CheckFilled from "../img/check-filled.svg"
 import useAuthContext from '../hooks/useAuthContext'
 import useProjectContext from '../hooks/useProjectContext'
 import { json } from 'react-router'
@@ -64,8 +66,6 @@ const TaskItem = (props) => {
         //update global project sstate
     }
 
-    
-
     return ( 
         <div className="task-item">
             <div className="task-item-section">
@@ -75,10 +75,14 @@ const TaskItem = (props) => {
                 <p>{props.task.details}</p>
             </div>
             <div className="task-item-section">
-                <p>{props.task.date}</p>
+                {/* <p>{props.task.date}</p> */}
+                <p>{format(parseISO(props.task.date), 'dd-MM-yyyy')}</p>
             </div>
             <div className="task-item-section">
                 <p>{props.task.important ? <img className="small-svg" src={StarFill}></img> : <img className="small-svg" src={StarOutline}></img>}</p>
+            </div>
+            <div className="task-item-section check-container">
+                {<img src={CheckGrey} className="small-svg check-svg"></img>}
             </div>
             
             <div className="task-item-section dots-container button-pointer" onClick={handleDotsClick}>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import {format, parseISO} from 'date-fns'
 import useAuthContext from '../hooks/useAuthContext'
 import useProjectContext from '../hooks/useProjectContext'
 import Dots from "../img/dots.svg"
@@ -7,9 +8,9 @@ import StarFill from "../img/star-fill.svg"
 
 const EditTaskItem = (props) => {
 
-    const [name, setName] = useState('')
-    const [details, setDetails] = useState('')
-    const [date, setDate] = useState('')
+    const [name, setName] = useState(props.task.name)
+    const [details, setDetails] = useState(props.task.details)
+    const [date, setDate] = useState(props.task.date)
     const [taskIsImportant, setTaskIsImportant] = useState(props.task.important)
     const [error, setError] = useState(null)
 
@@ -61,6 +62,10 @@ const EditTaskItem = (props) => {
             setError(json.error)
         }
     }
+
+    useEffect(() => {
+        console.log('DAAATE TEEEST ----', new Date(props.task.date).toISOString().split("T")[0])
+    }, [])
     
     return ( 
 
@@ -83,7 +88,7 @@ const EditTaskItem = (props) => {
                     </div>
                     <div className="form-section">
                         <label htmlFor="date"></label>
-                        <input defaultValue={props.task.date} type="date" name="date"
+                        <input value={new Date(props.task.date).toISOString().split("T")[0]} type="date" name="date"
                                 onChange={(e) => setDate(e.target.value)}
                         ></input>
                     </div>

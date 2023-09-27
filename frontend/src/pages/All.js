@@ -21,7 +21,9 @@ const All = (props) => {
 
     return ( 
         <div className="project-container">
-            <h1>All</h1>
+            <div className="project-title-container">
+                <h1>All</h1>
+            </div>
             <div className="task-container">
                 {
                     all.map(task => (

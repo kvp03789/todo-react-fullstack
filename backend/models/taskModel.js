@@ -12,7 +12,7 @@ const taskSchema = new Schema({
     },
 
     date: {
-        type: String
+        type: Date
     },
 
     important: {

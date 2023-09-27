@@ -2,6 +2,10 @@ import { NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useProjectContext } from "../hooks/useProjectContext"; 
 import Plus from "../img/plus.svg"
+import Calendar from "../img/calendar.svg"
+import Calendar2 from "../img/calendar2.svg"
+import Flag from "../img/flag.svg"
+import ProjectStar from "../img/star.svg"
 import useAuthContext from "../hooks/useAuthContext";
 import NavProjectItem from "./NavProjectItem";
 
@@ -58,13 +62,33 @@ const Nav = () => {
     
     return ( 
         <nav>
-            <NavLink to="/all" className="nav-item">All</NavLink>
-            <NavLink to="/today" className="nav-item">Today</NavLink>
-            <NavLink to="/week" className="nav-item">Week</NavLink>
-            <NavLink to="/important" className="nav-item">Important</NavLink>
-        
-
+            <NavLink to="/all" >
+                <div className="nav-item">
+                    <img src={Flag} className="smaller-svg"></img>
+                    <h3 className="nav-title">All</h3>
+                </div>
+            </NavLink>
+            <NavLink to="/today" >
+                <div className="nav-item">
+                    <img src={Calendar2} className="smaller-svg"></img>
+                    <h3 className="nav-title">Today</h3>
+                </div>
+            </NavLink>
+            <NavLink to="/week" >
+                <div className="nav-item">
+                    <img src={Calendar} className="smaller-svg"></img>
+                    <h3 className="nav-title">Week</h3>
+                </div>
+            </NavLink>
+            <NavLink to="/important" >
+                <div className="nav-item">
+                    <img src={ProjectStar} className="smaller-svg"></img>
+                    <h3 className="nav-title">Important</h3>
+                </div>
+            </NavLink>
+            
         <div className="nav-projects-container">
+            <h3>Projects</h3>
             {
                 isLoading === false && globalProjectState
                 ? globalProjectState.projects.map((proj) => (

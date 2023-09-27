@@ -30,9 +30,10 @@ console.log(
     await mongoose.connect(mongoDb);
     console.log("Debug: Should be connected?");
     await deleteAll();
+    await createUsers();  
     await createProjects();
     await createTasks();
-    // await createUsers();    
+      
     await updateProjects()
 
     
@@ -58,15 +59,16 @@ console.log(
   }
 
   async function userCreate(index, email, password) {
-    const user = new User({ email, password })
-    await user.save()
+    // const user = new User({ email, password })
+    // await user.save()
+    const user = await User.signup(email, password)
     usersArray[index] = user
     console.log(`Added user: ${email}`);
   }
   
   async function projectCreate(index, name) {
     
-    const project = new Project({ name, user: '651337683cb2703b903dc7ea' });
+    const project = new Project({ name, user: usersArray[2]._id });
     await project.save();
     projectsArray[index] = project;
     console.log(`Added project: ${name}`);
@@ -97,7 +99,8 @@ console.log(
     console.log('Creating users');
     await Promise.all([
       userCreate(0, "test_user@website.com", "abc123!"),
-      userCreate(1, "guy_man123@emailsite.com", "abc456!")
+      userCreate(1, "guy_man123@emailsite.com", "abc456!"),
+      userCreate(2, "clay.nichols@gmail.com", "azmcn1077!")
     ])
   }
   
@@ -114,7 +117,7 @@ console.log(
   async function createTasks() {
     console.log("Adding tasks");
     await Promise.all([
-      taskCreate(0, "get materials", "go to home depot", "2023-10-31", true, projectsArray[1].id),
+      taskCreate(0, "get materials", "go to home depot", new Date("2023-10-31"), true, projectsArray[1].id),
     ]);
   }
 
@@ -123,7 +126,7 @@ console.log(
     await Promise.all([
         deleteProjects(),
         deleteTasks(),
-        // deleteUsers()
+        deleteUsers()
     ])
     console.log("Old data deleted!")
   }

@@ -85,7 +85,10 @@ const Project = (props) => {
 
     return ( 
         <div className="project-container">
-            <h1>{props.project.name}</h1>
+            <div className="project-title-container">
+                <h1>{props.project.name}</h1>
+            </div>
+            
 
                 <div className="task-container">
                 {
@@ -94,10 +97,7 @@ const Project = (props) => {
                         <TaskItem project={props.project} task={task}/>
                     ))
 
-                    :   <div>
-                            <p>No tasks currently on this project</p>
-
-                        </div>
+                    :   <p>No tasks currently on this project</p>
                 }
                 </div>
                 <div className="new-task-form-and-button-container">
@@ -126,7 +126,8 @@ const Project = (props) => {
                                             (e) => {
                                                 const dateInputValue = new Date(parseISO(e.target.value))
                                                 console.log('date input value: ', dateInputValue)
-                                                setDate(format(dateInputValue, 'dd-MM-yyyy'))
+                                                //setDate(format(dateInputValue, 'dd-MM-yyyy'))
+                                                setDate(e.target.value)
                                             }}
                                 ></input>
                             </div>

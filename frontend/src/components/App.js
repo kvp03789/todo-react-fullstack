@@ -66,12 +66,13 @@ const App = () => {
         <Header setDisplayNav={setDisplayNav} displayNav={displayNav}/>
 
         <main>
-            <p>RUNNING IN {process.env.NODE_ENV}</p>
+            
             {
               displayNav &&  <Nav />
             }
             
             <Routes element={<RootLayout />}>
+                <Route path="/" element={user ? <All /> : <Navigate to="/user"/>} />
                 <Route path="all" element={user ? <All /> : <Navigate to="/user"/>} />
                 <Route path="week" element={user ? <Week /> : <Navigate to="/user"/>} />
                 <Route path="today" element={user ? <Today /> : <Navigate to="/user"/>} />

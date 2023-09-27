@@ -6,6 +6,10 @@ body {
   margin: 0px;
 }
 
+a{
+  text-decoration: none;
+}
+
 
 .root-layout{
   display: flex;
@@ -25,6 +29,7 @@ header{
   display: flex;
   justify-content: space-around;
   align-items: center;
+  border-bottom: 2px solid black;
 }
 
 .header-buttons-container{
@@ -49,29 +54,50 @@ header{
   background-color: rgba(76, 0, 130, 0.305);
 }
 
+main{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+}
+
 nav{
+  width: 20%;
   display: flex;
   flex-direction: column;
   border-right: 2px solid black;
 }
 
+.nav-item{
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .nav-project-item{
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
 }
 
 .nav-project-item-section{
+  justify-self: flex-start;
   display: flex;
+  justify-content: flex-start;
+}
+
+
+.nav-item:hover{
+  cursor: pointer;
+  background-color: rgba(149, 150, 150, 0.313);
 }
 
 .nav-item-dots-container{
   position: relative;
 }
 
-main{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.nav-item-dots-container:hover{
+  background-color: rgba(128, 128, 128, 0.308);
 }
 
 .task-container{
@@ -79,17 +105,41 @@ main{
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: center;
+  margin: 2rem;
 }
 
 .task-item{
   display: flex;
   justify-content: center;
+  gap: 20px;
+  border: 2px solid rgb(68, 108, 67);
+  border-radius: 10px;
+}
+
+.task-item:hover{
+  background-color: rgba(101, 243, 101, 0.461);
 }
 
 .task-item-section{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
   z-index: 900;
 }
+
+.check-container{
+  
+}
+
+.check-container:hover{
+  cursor: pointer;
+  background-color: rgb(254, 254, 254);
+}
+
+.check-container:hover .check-svg{
+  filter: invert(55%) sepia(100%) saturate(3.5) hue-rotate(45deg) brightness(103%) contrast(102%);}
 
 .user-page-container{
   display: flex;
@@ -109,6 +159,15 @@ main{
 .user-form-container{
   display: flex;
   flex-direction: column;
+}
+
+.project-container{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 
@@ -159,7 +218,7 @@ main{
 }
 
 .error-message{
-  color: red;
+  color: #ff0707;
 }
 
 .button-pointer:hover{
@@ -172,4 +231,8 @@ main{
 
 .hidden{
   display: none;
+}
+
+.check-fill{
+  filter: invert(93%) sepia(100%) saturate(26%) hue-rotate(91deg) brightness(105%) contrast(110%);
 }

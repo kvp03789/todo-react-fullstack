@@ -17,6 +17,10 @@ const Header = (props) => {
         props.setDisplayNav(!props.displayNav)
     }
 
+    const handleLogoutClick = () => {
+        props.setDisplayNav(false)
+        logout()
+    }
 
     return ( 
         <header>
@@ -45,7 +49,7 @@ const Header = (props) => {
             
             <div className="header-buttons-container header-section">
                 <h3>{user.email}</h3>
-                <button onClick={logout} className="logout-button  header-button button-pointer">Log out</button>
+                <button onClick={handleLogoutClick} className="logout-button  header-button button-pointer">Log out</button>
             </div> 
             }
         </header>

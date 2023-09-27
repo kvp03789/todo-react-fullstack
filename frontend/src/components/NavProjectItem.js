@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import Dots from "../img/dots.svg"
+import ProjectMenu from "../img/project-menu.svg"
 import useAuthContext from "../hooks/useAuthContext";
 
 const NavProjectItem = (props) => {
@@ -75,9 +76,14 @@ const NavProjectItem = (props) => {
 
     return ( 
         <div className="nav-project-item nav-item">
-        <div className="nav-project-item-section">
-            <NavLink to={`projects/${props.project.name.split(" ").join("_")}`} className="nav-item">{props.project.name}</NavLink>
-            <div onClick={handleDotsClick} className="nav-item-dots-container">
+            <img src={ProjectMenu} className="smaller-svg"></img>
+            <div className="nav-project-item-section">
+                <NavLink to={`projects/${props.project.name.split(" ").join("_")}`}>{props.project.name}</NavLink>
+                
+                    
+                
+            </div>
+            <div onClick={handleDotsClick} className="nav-item-dots-container nav-project-item-section">
                 <img src={Dots} className="smaller-svg button-pointer"></img>
                 {
                     displayDotsMenu &&
@@ -91,10 +97,8 @@ const NavProjectItem = (props) => {
                     </div>
                 }
             </div>
-        </div>
-        <div className="nav-project-item-section">
-            {
-                displayEditProjectForm &&
+            {displayEditProjectForm &&
+            <div className="nav-project-item-section">  
                 <div className="edit-project-form-container">
                     <div className="form-section">
                         <input name="name" defaultValue={props.project.name} onChange={(e) => setName(e.target.value)}></input>
@@ -104,8 +108,8 @@ const NavProjectItem = (props) => {
                         <button onClick={() => setDisplayEditProjectForm(false)}>Cancel</button>
                     </div>
                 </div>
-            }
-        </div>
+            </div>
+             }
         </div>
      );
 }
