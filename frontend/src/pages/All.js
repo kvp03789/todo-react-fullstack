@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import useProjectContext from "../hooks/useProjectContext";
 import StarOutline from "../img/star-outline.svg"
 import StarFill from "../img/star-fill.svg"
+import CheckGrey from "../img/check-grey.svg"
+import CheckFilled from "../img/check-filled.svg"
 
 const All = (props) => {
 
@@ -27,7 +29,10 @@ const All = (props) => {
             <div className="task-container">
                 {
                     all.map(task => (
-                        <div className="task-item" key={task._id}>
+                        <div className={task.complete ? "task-item task-complete" : "task-item"} key={task._id}>
+                            <div className="task-item-section check-container">
+                                {<img src={task.complete ? CheckFilled : CheckGrey} className="small-svg check-svg"></img>}
+                            </div>
                             <div className="task-item-section">
                                 <h3>{task.name}</h3>
                             </div>

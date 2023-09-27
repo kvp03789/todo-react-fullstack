@@ -16,7 +16,7 @@ const TaskItem = (props) => {
     const [displayDotsMenu, setDisplayDotsMenu] = useState(false)
     const [displayEditTask, setDisplayEditTask] = useState(false)
     const [error, setError] = useState(null)
-    
+    const [taskComplete, setTaskComplete] = useState(props.task.complete)
 
     const { user } = useAuthContext()
     const { globalProjectState, dispatch } = useProjectContext()
@@ -66,8 +66,44 @@ const TaskItem = (props) => {
         //update global project sstate
     }
 
+    const handleTaskCompleteClick = async () => {
+        setTaskComplete(!taskComplete)
+        console.log("marking task as complete...")
+        const newTask = {...props.task, complete: !props.task.complete}
+        const options = {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            },
+            body: JSON.stringify(newTask)
+        }
+        const response = await fetch(
+            process.env.NODE_ENV === "development" || "test"
+            ? `http://localhost:4000/api/projects/${props.project._id}/tasks/${props.task._id}`
+            : `https://todo-react-fullstack-production.up.railway.app/api/projects/${props.project._id}/tasks/${props.task._id}`,
+            options
+        )
+        const json = await response.json()
+
+        if(response.ok){
+            dispatch({type: 'SET_PROJECTS',
+            payload: globalProjectState.projects.map(proj => {
+               return proj._id === props.project._id
+               ? json
+               : proj
+            })})
+        }
+        if(!response.ok){
+            console.log("marking complete failed. heres the json: ", json)
+        }
+    }
+
     return ( 
-        <div className="task-item">
+        <div className={props.task.complete ? "task-item task-complete" : "task-item"}>
+            <div className="task-item-section check-container" onClick={handleTaskCompleteClick}>
+                {<img src={props.task.complete ? CheckFilled : CheckGrey} className="small-svg check-svg"></img>}
+            </div>
             <div className="task-item-section">
                 <h3>{props.task.name}</h3>
             </div>
@@ -81,10 +117,6 @@ const TaskItem = (props) => {
             <div className="task-item-section">
                 <p>{props.task.important ? <img className="small-svg" src={StarFill}></img> : <img className="small-svg" src={StarOutline}></img>}</p>
             </div>
-            <div className="task-item-section check-container">
-                {<img src={CheckGrey} className="small-svg check-svg"></img>}
-            </div>
-            
             <div className="task-item-section dots-container button-pointer" onClick={handleDotsClick}>
                 <img src={Dots} className="small-svg"></img>
             </div>

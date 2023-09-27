@@ -100,6 +100,11 @@ nav{
   background-color: rgba(128, 128, 128, 0.308);
 }
 
+.nav-projects-container{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 .task-container{
   width: 100%;
   display: flex;
@@ -113,6 +118,7 @@ nav{
   display: flex;
   justify-content: center;
   gap: 20px;
+  position: relative;
   border: 2px solid rgb(68, 108, 67);
   border-radius: 10px;
 }
@@ -235,4 +241,18 @@ nav{
 
 .check-fill{
   filter: invert(93%) sepia(100%) saturate(26%) hue-rotate(91deg) brightness(105%) contrast(110%);
+}
+
+.task-complete > *{
+  color: grey;
+}
+
+.task-complete::after{
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  border-top: 5px solid rgba(0, 0, 0, 0.233); /* Adjust the color and style as needed */
+  width: 105%;
 }

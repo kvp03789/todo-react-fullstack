@@ -12,6 +12,7 @@ import Nav from "./Nav";
 import useProjectContext from "../hooks/useProjectContext";
 import useAuthContext from "../hooks/useAuthContext";
 import User from "./User";
+import Notes from "../pages/Notes";
 
 
 const App = () => {
@@ -82,6 +83,7 @@ const App = () => {
                         <Route path={`projects/${proj.name.split(" ").join("_")}`} element={user ? <Project project={proj}  /> : <Navigate to="/user"/>}/>
                     ))
                 }
+                <Route path="notes" element={user ? <Notes /> : <Navigate to="/user"/> } />
                 <Route path="user" element={user ? <Navigate to="/all"/> : <User />} />
                 <Route path="*" element={<NotFound/>} />
             </Routes>

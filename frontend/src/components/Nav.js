@@ -6,6 +6,7 @@ import Calendar from "../img/calendar.svg"
 import Calendar2 from "../img/calendar2.svg"
 import Flag from "../img/flag.svg"
 import ProjectStar from "../img/star.svg"
+import Notes from "../img/notes.svg"
 import useAuthContext from "../hooks/useAuthContext";
 import NavProjectItem from "./NavProjectItem";
 
@@ -116,6 +117,12 @@ const Nav = () => {
         {
             error && <p className="error-message">{error}</p>
         }
+            <NavLink to="/notes" >
+                <div className="nav-item">
+                    <img src={Notes} className="smaller-svg"></img>
+                    <h3 className="nav-title">Notes</h3>
+                </div>
+            </NavLink>
 
     </nav>
      );

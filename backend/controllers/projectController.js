@@ -134,7 +134,8 @@ exports.update_task = asyncHandler(async(req, res) => {
         res.status(200).json(project)
     }
     catch(err){
-        console.log(err.message)
+        console.log(err)
+        res.status(500).json({error: err.message})
     }
 
 
