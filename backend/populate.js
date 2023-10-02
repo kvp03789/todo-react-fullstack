@@ -11,11 +11,13 @@ console.log(
   const Project = require("./models/projectModel");
   const Task = require("./models/taskModel")
   const User = require("./models/userModel")
+  const Note = require("./models/noteModel")
 
   
   const projectsArray = [];
   const tasksArray = [];
   const usersArray = [];
+  const notesArray = [];
  
   
   const mongoose = require("mongoose");
@@ -33,7 +35,7 @@ console.log(
     await createUsers();  
     await createProjects();
     await createTasks();
-      
+    await createNotes();
     await updateProjects()
 
     
@@ -56,6 +58,13 @@ console.log(
     project.taskList = newTaskList
     await project.save()
 
+  }
+
+  async function noteCreate(index, name, body, user){
+    const note = new Note({name, body, user: usersArray[2]._id})
+    await note.save()
+    notesArray[index] = note;
+    console.log(`Added note: ${note.name}`);
   }
 
   async function userCreate(index, email, password) {
@@ -93,6 +102,13 @@ console.log(
 
   async function deleteProjects(){
     await Project.deleteMany({})
+  }
+
+  async function createNotes() {
+    console.log('Creating notes')
+    await Promise.all([
+      noteCreate(0, 'test note title', 'heres basically the body of a test note. trying to make it lengthy like a note would be')
+    ])
   }
   
   async function createUsers() {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useProjectContext from "../hooks/useProjectContext";
-import { isThisWeek, parseISO } from "date-fns";
+import { isThisWeek, parseISO, format } from "date-fns";
 import StarOutline from "../img/star-outline.svg"
 import StarFill from "../img/star-fill.svg"
 import CheckGrey from "../img/check-grey.svg"
@@ -45,7 +45,8 @@ const Week = () => {
                             <p>{task.details}</p>
                         </div>
                         <div className="task-item-section">
-                            <p>{task.date}</p>
+                            {/* <p>{props.task.date}</p> */}
+                            <p>{format(parseISO(task.date), 'MM-dd-yyyy')}</p>
                         </div>
                         <div className="task-item-section">
                             <p>{task.important ? <img className="small-svg" src={StarFill}></img> : <img className="small-svg" src={StarOutline}></img>}</p>

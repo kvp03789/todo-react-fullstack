@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Logo from "../img/listo_logo.png"
 import useSignup from "../hooks/useSignup";
 import useLogin from "../hooks/useLogin";
+import useAuthContext from "../hooks/useAuthContext";
 
 const User = () => {
 
@@ -18,6 +19,7 @@ const User = () => {
     const [passwordVerify, setPasswordVerify] = useState('')
     const { signup } = useSignup()
     const { login, error } = useLogin()
+    const { user } = useAuthContext()
 
     const handleLogin = async (e) => {
             e.preventDefault()
@@ -34,6 +36,10 @@ const User = () => {
         }
     }
 
+    const handleTestAccountLogin = async () => {
+        await login('test_user@website.com', 'abc123!')
+    }
+
     return ( 
         <div className="user-page-container">
             <div className="user-page-section">
@@ -47,7 +53,7 @@ const User = () => {
                         <h3>Login</h3>
                         <input type="email" placeholder="Email" value={email} onChange={(e) => {setEmail(e.target.value)}}/> 
                         <input type="password" placeholder="Password" value={password} onChange={(e) => {setPassword(e.target.value)}}/> 
-                        <button type="submit">Submit</button>
+                        <button type="submit" className="button-pointer">Submit</button>
                     </div>
                     </form>
                     <h5>Don't have an account?</h5>
@@ -58,6 +64,8 @@ const User = () => {
                                 <p className="error-message">{error}</p>
                             </div>
                         }
+                    <h5>Or</h5>
+                        <button className="button-pointer" onClick={handleTestAccountLogin}>Use a test account</button>
                 </div>
             }
 

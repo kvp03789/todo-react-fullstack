@@ -4,6 +4,7 @@ import StarOutline from "../img/star-outline.svg"
 import StarFill from "../img/star-fill.svg"
 import CheckGrey from "../img/check-grey.svg"
 import CheckFilled from "../img/check-filled.svg"
+import { format, parseISO } from "date-fns";
 
 const Important = () => {
 
@@ -43,7 +44,8 @@ const Important = () => {
                                 <p>{task.details}</p>
                             </div>
                             <div className="task-item-section">
-                                <p>{task.date}</p>
+                                {/* <p>{props.task.date}</p> */}
+                                <p>{format(parseISO(task.date), 'MM-dd-yyyy')}</p>
                             </div>
                             <div className="task-item-section">
                                 <p>{task.important ? <img className="small-svg" src={StarFill}></img> : <img className="small-svg" src={StarOutline}></img>}</p>

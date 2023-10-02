@@ -10,6 +10,9 @@ a{
   text-decoration: none;
 }
 
+input{
+  margin: 20px;
+}
 
 .root-layout{
   display: flex;
@@ -79,6 +82,8 @@ nav{
 .nav-project-item{
   display: flex;
   justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .nav-project-item-section{
@@ -180,9 +185,86 @@ nav{
   justify-content: center;
 }
 
+.note-item{
+  width: 200px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  border-radius: 10px;
+  position: relative;
+  justify-content: flex-start;
+  align-items: center;
+  
+}
 
+.note-body-container{
+  display: flex;
+  justify-content: center;
+  height: 80%;
+}
 
+.note-body-container{
+  width: 100%;
+}
 
+.note-item:hover{
+  cursor: pointer;
+  box-shadow: 5px 2px 5px 2px;
+}
+
+#add-note-svg{
+  opacity: .4;
+}
+
+#add-note-svg:hover{
+  border: 4px solid rgba(0, 0, 0, 0.552);
+  border-radius: 10px;
+  margin: -4px;
+  opacity: 1;
+}
+
+.notes-task-container{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.new-notes-button-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.new-notes-form-button-container{
+
+}
+
+.new-notes-form-button-container:hover{
+  
+}
+
+.new-note-button{
+  opacity: .3;
+}
+
+.new-note-button:hover{
+  opacity: 1;
+}
+
+.new-notes-form{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: flex-start;
+  width: 200px;
+  height: 300px;
+}
+
+.note-item-button:hover{
+  filter: invert(100%) sepia(0%) saturate(19%) hue-rotate(10deg) brightness(105%) contrast(105%);
+}
 
 
 
@@ -263,4 +345,12 @@ nav{
 
 .active{
   background-color: rgba(192, 190, 190, 0.719);
+}
+
+.low-opacity{
+  opacity: .5;
+}
+
+.no-opacity{
+  opacity: 1;
 }

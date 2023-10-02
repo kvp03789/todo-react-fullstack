@@ -9,7 +9,11 @@ const {
     get_single_task,
     create_new_task,
     delete_task,
-    update_task
+    update_task,
+    get_notes,
+    post_note,
+    edit_note,
+    delete_note
 } = require('../controllers/projectController')
 const requireAuth = require('../middleware/requireAuth')
 
@@ -42,5 +46,17 @@ router.delete("/:projId/tasks/:taskId", delete_task)
 
 //edit task
 router.patch("/:projId/tasks/:taskId", update_task)
+
+//get notes
+router.get("/notes/:userId", get_notes)
+
+//post note
+router.post("/notes", post_note)
+
+//edit note
+router.patch("/notes/:id", edit_note)
+
+//delete note
+router.delete("/notes/:id", delete_note)
 
 module.exports = router

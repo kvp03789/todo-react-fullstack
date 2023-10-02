@@ -43,3 +43,17 @@ exports.loginUser = asyncHandler(async(req, res, next) => {
 exports.logoutUser = asyncHandler(async(req, res, next) => {
     res.json({message: 'user logged out'})
 })
+
+//test log in
+
+exports.test_loginUser = asyncHandler(async(req, res) => {
+    res.json({message: 'test login'})
+    try{
+        const user = await User.login(email, password) 
+        const token = createToken(user._id)
+        res.status(200).json({message: 'user logged in!', email, token, _id: user._id })
+    }
+    catch(err){
+        res.status(400).json({error: err.message})
+    }
+})

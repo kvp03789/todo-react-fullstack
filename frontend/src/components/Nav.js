@@ -88,7 +88,7 @@ const Nav = () => {
                 </div>
             </NavLink>
             
-        <div className="nav-projects-container">
+        {/* <div className="nav-projects-container"> */}
             <h3>Projects</h3>
             {
                 isLoading === false && globalProjectState
@@ -97,7 +97,7 @@ const Nav = () => {
                 ))
                 : <p>"loading data..."</p>
             }
-        </div>
+        {/* </div> */}
 
         {
             displayInput &&

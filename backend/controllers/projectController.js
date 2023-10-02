@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler')
 const Project = require('../models/projectModel')
 const Task = require('../models/taskModel')
+const Note = require("../models/noteModel")
 
 //get all projects of user
 
@@ -137,17 +138,59 @@ exports.update_task = asyncHandler(async(req, res) => {
         console.log(err)
         res.status(500).json({error: err.message})
     }
+})
 
+exports.get_notes = asyncHandler(async (req, res) => {
+    console.log("DEBUG: Get notes request made")
+    try{
+        const notes = await Note.find({user: req.params.userId})
+        res.status(200).json(notes)
+    }
+    catch(err){
+        res.status(500).json(err.message)
+    }
+})
 
-    
-    //const updatedTask = await Task.findOneAndUpdate({ _id: taskId }, { ...req.body }, {new: true})
-    
-    // const updatedProject = await Project.findOneAndUpdate(
-    //     { taskList: { $elemMatch: { _id: taskId } } },
-    //     { ...req.body },
-    //     {new: true}
-    // )
-   
+exports.post_note = asyncHandler(async(req, res) => {
+    console.log("DEBUG: Post note request made")
+    const { name, body, user } = req.body
+    try{
+        const newNote = await Note.create({ name, body, user })
+        res.status(200).json(newNote)
+    }
+    catch(err){
+        res.status(500).json({ error: err.message })
+    }
+})
 
+exports.edit_note = asyncHandler(async(req, res) => {
+    const id = req.params.id
+    const { name, body, user } = req.body
+    try{
+        const note = await Note.findById(id)
+        // for(let k in req.body){note[k] = req.body[k]}
+        // console.log('DEBUG: heres the note: ', note)
+        // await note.save()
+        note.name = name
+        note.body = body
+        await note.save()
+        console.log(' ok heres the note: ', note)
+        res.status(200).json(note)
+    }
+    catch(err){
+        res.status(500).json({ error: err.message }) 
+    }
     
+})
+
+exports.delete_note = asyncHandler(async(req, res) => {
+    const id = req.params.id
+    try{
+        const deletedNote = await Note.findByIdAndDelete(id)
+        res.status(200).json(deletedNote)
+    } 
+    catch(err){
+        res.status(500).json({ error: err.message })
+    }
+
 })
